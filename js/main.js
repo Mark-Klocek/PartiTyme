@@ -1,7 +1,7 @@
 document.querySelector('button').addEventListener('click',drinkName)
 
 function drinkName(){
-    
+    document.querySelector('ul').innerHTML = ''
     fetch(`https://www.thecocktaildb.com/api/json/v1/1/random.php`)
     .then(res => res.json())
     .then(data => {
@@ -11,8 +11,12 @@ function drinkName(){
         let i = 1
         
         while (data.drinks[0][`strIngredient${i}`] !== null){
-        document.querySelector('ul').innerHTML += `<li>${data.drinks[0][`strIngredient${i}`]}: ${data.drinks[0][`strMeasure${i}`]}</li>`
-        i++
+            let measurement = data.drinks[0][`strMeasure${i}`]
+            if (measurement == null){
+                measurement = 'To your taste'
+            }
+            document.querySelector('ul').innerHTML += `<li>${data.drinks[0][`strIngredient${i}`]}: ${measurement}</li>`
+            i++
         }
         
         
